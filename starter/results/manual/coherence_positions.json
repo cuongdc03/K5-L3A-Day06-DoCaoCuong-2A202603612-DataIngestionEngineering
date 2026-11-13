@@ -1,0 +1,66 @@
+{
+ "rule": "Generate blank manual-labelling sheets (run from starter/: python scripts/make_manual_sheets.py).\n\nLabels are NEVER filled here. Helper columns named auto_* are mechanical checks to speed up\nverification; they do not replace the human judgement and must not be copied as labels.\n\nSampling rule for chunk coherence (fixed before any score is seen):\n  take the 146 counted pages in page order, keep indexes 0, 15, 30, ..., 135 (10 pages spread\n  over all five chapters); in each page the position is the sentence that starts closest to the\n  middle of the body text (80-char anchor). Every strategy is judged on the chunk that contains\n  that anchor. C2 uses the same chunks as B2, so it is scored once as B2/C2.\n",
+ "positions": [
+  {
+   "position_id": "pos01",
+   "pdf_page": 18,
+   "chapter": 1,
+   "anchor_80chars": "Access multimedia content (http://openstax.org/books/introduction-intellectual-p"
+  },
+  {
+   "position_id": "pos02",
+   "pdf_page": 33,
+   "chapter": 1,
+   "anchor_80chars": "Indeed, patent records from the nineteenth century reveal that more than two-thi"
+  },
+  {
+   "position_id": "pos03",
+   "pdf_page": 48,
+   "chapter": 1,
+   "anchor_80chars": "This was a very different approach than that of elitist European patent systems "
+  },
+  {
+   "position_id": "pos04",
+   "pdf_page": 69,
+   "chapter": 2,
+   "anchor_80chars": "As of 2014, a wide variety of litigation finance firms exist that may be willing"
+  },
+  {
+   "position_id": "pos05",
+   "pdf_page": 84,
+   "chapter": 2,
+   "anchor_80chars": "After closing arguments are concluded, the judge reads the final jury instructio"
+  },
+  {
+   "position_id": "pos06",
+   "pdf_page": 104,
+   "chapter": 3,
+   "anchor_80chars": "But this, I think, is a non-sequitur … for when Congress came to execute this po"
+  },
+  {
+   "position_id": "pos07",
+   "pdf_page": 119,
+   "chapter": 3,
+   "anchor_80chars": "Unless the artist doing the sampling licenses the sound recording (and maybe the"
+  },
+  {
+   "position_id": "pos08",
+   "pdf_page": 134,
+   "chapter": 3,
+   "anchor_80chars": "The debates may be contentious, as they always are when intellectual property ri"
+  },
+  {
+   "position_id": "pos09",
+   "pdf_page": 155,
+   "chapter": 4,
+   "anchor_80chars": "These are surnames, geographic marks, and ornamental, immoral, or offensive mark"
+  },
+  {
+   "position_id": "pos10",
+   "pdf_page": 177,
+   "chapter": 5,
+   "anchor_80chars": "For example, a version of the UTSA adopted by some states contains a provision t"
+  }
+ ],
+ "problems": []
+}

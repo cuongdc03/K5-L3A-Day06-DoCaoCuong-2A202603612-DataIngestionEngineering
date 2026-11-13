@@ -1,0 +1,126 @@
+{
+ "seed": 20261113,
+ "note": "blind order; strategy hidden from the scorer while scoring",
+ "order": [
+  {
+   "item": 1,
+   "position_id": "pos02",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p033-01"
+  },
+  {
+   "item": 2,
+   "position_id": "pos06",
+   "strategy": "A",
+   "chunk_id": "A-p104-03"
+  },
+  {
+   "item": 3,
+   "position_id": "pos10",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p177-01"
+  },
+  {
+   "item": 4,
+   "position_id": "pos09",
+   "strategy": "A",
+   "chunk_id": "A-p155-03"
+  },
+  {
+   "item": 5,
+   "position_id": "pos07",
+   "strategy": "A",
+   "chunk_id": "A-p119-05"
+  },
+  {
+   "item": 6,
+   "position_id": "pos08",
+   "strategy": "A",
+   "chunk_id": "A-p134-01"
+  },
+  {
+   "item": 7,
+   "position_id": "pos09",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p155-02"
+  },
+  {
+   "item": 8,
+   "position_id": "pos05",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p084-02"
+  },
+  {
+   "item": 9,
+   "position_id": "pos04",
+   "strategy": "A",
+   "chunk_id": "A-p069-02"
+  },
+  {
+   "item": 10,
+   "position_id": "pos08",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p134-00"
+  },
+  {
+   "item": 11,
+   "position_id": "pos07",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p119-02"
+  },
+  {
+   "item": 12,
+   "position_id": "pos02",
+   "strategy": "A",
+   "chunk_id": "A-p033-02"
+  },
+  {
+   "item": 13,
+   "position_id": "pos05",
+   "strategy": "A",
+   "chunk_id": "A-p084-03"
+  },
+  {
+   "item": 14,
+   "position_id": "pos01",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p018-01"
+  },
+  {
+   "item": 15,
+   "position_id": "pos04",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p069-01"
+  },
+  {
+   "item": 16,
+   "position_id": "pos10",
+   "strategy": "A",
+   "chunk_id": "A-p177-02"
+  },
+  {
+   "item": 17,
+   "position_id": "pos06",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p104-01"
+  },
+  {
+   "item": 18,
+   "position_id": "pos03",
+   "strategy": "A",
+   "chunk_id": "A-p048-02"
+  },
+  {
+   "item": 19,
+   "position_id": "pos01",
+   "strategy": "A",
+   "chunk_id": "A-p018-01"
+  },
+  {
+   "item": 20,
+   "position_id": "pos03",
+   "strategy": "B2/C2",
+   "chunk_id": "B2-p048-01"
+  }
+ ]
+}

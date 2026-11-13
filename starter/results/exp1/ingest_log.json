@@ -1,0 +1,497 @@
+[
+ {
+  "started_at": "2026-11-13T07:36:49+00:00",
+  "model": "google/embeddinggemma-2 (local, sentence-transformers)",
+  "dimensions": 768,
+  "device": "mps",
+  "doc_prompt": "title: none | text: ",
+  "query_prompt": "task: search result | query: ",
+  "max_seq_length": 512,
+  "versions": {
+   "sentence-transformers": "6.3.0",
+   "transformers": "5.22.2",
+   "torch": "2.15.0",
+   "psycopg": "3.3.8",
+   "pymupdf": "2.1"
+  },
+  "vector_store": "pgvector 0.8.7 / PostgreSQL 16, cosine, exact scan (no ANN index)",
+  "cost_usd": 0.0,
+  "pages": 146,
+  "page_errors": [],
+  "read_seconds": 1.5,
+  "strategies": {
+   "A": {
+    "params": {
+     "chunker": "fixed_size",
+     "size": 500,
+     "overlap": 50,
+     "filter": false
+    },
+    "n_chunks": 1016,
+    "n_rows_in_db": 1016,
+    "re_embedded": 1016,
+    "reused_from_db": 0,
+    "written": 1016,
+    "deleted_obsolete": 0,
+    "total_chars": 474609,
+    "total_tokens": 104614,
+    "chars": {
+     "min": 55,
+     "p10": 345,
+     "median": 500.0,
+     "mean": 467.1,
+     "p90": 500,
+     "max": 500
+    },
+    "tokens": {
+     "min": 19,
+     "p10": 86,
+     "median": 102.0,
+     "mean": 103.0,
+     "p90": 124,
+     "max": 234
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 1016,
+     "footnote": 0
+    },
+    "ingest_seconds": 33.31
+   },
+   "B": {
+    "params": {
+     "chunker": "by_paragraph",
+     "max_size": 1200,
+     "filter": false
+    },
+    "n_chunks": 645,
+    "n_rows_in_db": 645,
+    "re_embedded": 645,
+    "reused_from_db": 0,
+    "written": 645,
+    "deleted_obsolete": 0,
+    "total_chars": 426144,
+    "total_tokens": 92015,
+    "chars": {
+     "min": 7,
+     "p10": 179,
+     "median": 679,
+     "mean": 660.7,
+     "p90": 1100,
+     "max": 1216
+    },
+    "tokens": {
+     "min": 3,
+     "p10": 49,
+     "median": 145,
+     "mean": 142.7,
+     "p90": 229,
+     "max": 421
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 533,
+     "footnote": 112
+    },
+    "ingest_seconds": 30.27
+   }
+  },
+  "total_seconds": 70.99
+ },
+ {
+  "started_at": "2026-11-13T07:38:01+00:00",
+  "model": "google/embeddinggemma-2 (local, sentence-transformers)",
+  "dimensions": 768,
+  "device": "mps",
+  "doc_prompt": "title: none | text: ",
+  "query_prompt": "task: search result | query: ",
+  "max_seq_length": 512,
+  "versions": {
+   "sentence-transformers": "6.3.0",
+   "transformers": "5.22.2",
+   "torch": "2.15.0",
+   "psycopg": "3.3.8",
+   "pymupdf": "2.1"
+  },
+  "vector_store": "pgvector 0.8.7 / PostgreSQL 16, cosine, exact scan (no ANN index)",
+  "cost_usd": 0.0,
+  "pages": 146,
+  "page_errors": [],
+  "read_seconds": 1.48,
+  "strategies": {
+   "A": {
+    "params": {
+     "chunker": "fixed_size",
+     "size": 500,
+     "overlap": 50,
+     "filter": false
+    },
+    "n_chunks": 1016,
+    "n_rows_in_db": 1016,
+    "re_embedded": 0,
+    "reused_from_db": 1016,
+    "written": 0,
+    "deleted_obsolete": 0,
+    "total_chars": 474609,
+    "total_tokens": 104614,
+    "chars": {
+     "min": 55,
+     "p10": 345,
+     "median": 500.0,
+     "mean": 467.1,
+     "p90": 500,
+     "max": 500
+    },
+    "tokens": {
+     "min": 19,
+     "p10": 86,
+     "median": 102.0,
+     "mean": 103.0,
+     "p90": 124,
+     "max": 234
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 1016,
+     "footnote": 0
+    },
+    "ingest_seconds": 0.04
+   },
+   "B": {
+    "params": {
+     "chunker": "by_paragraph",
+     "max_size": 1200,
+     "filter": false
+    },
+    "n_chunks": 645,
+    "n_rows_in_db": 645,
+    "re_embedded": 0,
+    "reused_from_db": 645,
+    "written": 0,
+    "deleted_obsolete": 0,
+    "total_chars": 426144,
+    "total_tokens": 92015,
+    "chars": {
+     "min": 7,
+     "p10": 179,
+     "median": 679,
+     "mean": 660.7,
+     "p90": 1100,
+     "max": 1216
+    },
+    "tokens": {
+     "min": 3,
+     "p10": 49,
+     "median": 145,
+     "mean": 142.7,
+     "p90": 229,
+     "max": 421
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 533,
+     "footnote": 112
+    },
+    "ingest_seconds": 0.03
+   }
+  },
+  "total_seconds": 7.16
+ },
+ {
+  "started_at": "2026-11-13T07:38:15+00:00",
+  "model": "google/embeddinggemma-2 (local, sentence-transformers)",
+  "dimensions": 768,
+  "device": "mps",
+  "doc_prompt": "title: none | text: ",
+  "query_prompt": "task: search result | query: ",
+  "max_seq_length": 512,
+  "versions": {
+   "sentence-transformers": "6.3.0",
+   "transformers": "5.22.2",
+   "torch": "2.15.0",
+   "psycopg": "3.3.8",
+   "pymupdf": "2.1"
+  },
+  "vector_store": "pgvector 0.8.7 / PostgreSQL 16, cosine, exact scan (no ANN index)",
+  "cost_usd": 0.0,
+  "pages": 146,
+  "page_errors": [],
+  "read_seconds": 1.43,
+  "strategies": {
+   "A": {
+    "params": {
+     "chunker": "fixed_size",
+     "size": 500,
+     "overlap": 50,
+     "filter": false
+    },
+    "n_chunks": 1016,
+    "n_rows_in_db": 1016,
+    "re_embedded": 0,
+    "reused_from_db": 1016,
+    "written": 0,
+    "deleted_obsolete": 0,
+    "total_chars": 474609,
+    "total_tokens": 104614,
+    "chars": {
+     "min": 55,
+     "p10": 345,
+     "median": 500.0,
+     "mean": 467.1,
+     "p90": 500,
+     "max": 500
+    },
+    "tokens": {
+     "min": 19,
+     "p10": 86,
+     "median": 102.0,
+     "mean": 103.0,
+     "p90": 124,
+     "max": 234
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 1016,
+     "footnote": 0
+    },
+    "ingest_seconds": 0.03
+   },
+   "B": {
+    "params": {
+     "chunker": "by_paragraph",
+     "max_size": 1200,
+     "filter": false
+    },
+    "n_chunks": 645,
+    "n_rows_in_db": 645,
+    "re_embedded": 0,
+    "reused_from_db": 645,
+    "written": 0,
+    "deleted_obsolete": 0,
+    "total_chars": 426144,
+    "total_tokens": 92015,
+    "chars": {
+     "min": 7,
+     "p10": 179,
+     "median": 679,
+     "mean": 660.7,
+     "p90": 1100,
+     "max": 1216
+    },
+    "tokens": {
+     "min": 3,
+     "p10": 49,
+     "median": 145,
+     "mean": 142.7,
+     "p90": 229,
+     "max": 421
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 533,
+     "footnote": 112
+    },
+    "ingest_seconds": 0.02
+   }
+  },
+  "total_seconds": 5.27
+ },
+ {
+  "started_at": "2026-11-13T07:38:28+00:00",
+  "model": "google/embeddinggemma-2 (local, sentence-transformers)",
+  "dimensions": 768,
+  "device": "mps",
+  "doc_prompt": "title: none | text: ",
+  "query_prompt": "task: search result | query: ",
+  "max_seq_length": 512,
+  "versions": {
+   "sentence-transformers": "6.3.0",
+   "transformers": "5.22.2",
+   "torch": "2.15.0",
+   "psycopg": "3.3.8",
+   "pymupdf": "2.1"
+  },
+  "vector_store": "pgvector 0.8.7 / PostgreSQL 16, cosine, exact scan (no ANN index)",
+  "cost_usd": 0.0,
+  "pages": 146,
+  "page_errors": [],
+  "read_seconds": 1.44,
+  "strategies": {
+   "A": {
+    "params": {
+     "chunker": "fixed_size",
+     "size": 500,
+     "overlap": 50,
+     "filter": false
+    },
+    "n_chunks": 1016,
+    "n_rows_in_db": 1016,
+    "re_embedded": 0,
+    "reused_from_db": 1016,
+    "written": 0,
+    "deleted_obsolete": 0,
+    "total_chars": 474609,
+    "total_tokens": 104614,
+    "chars": {
+     "min": 55,
+     "p10": 345,
+     "median": 500.0,
+     "mean": 467.1,
+     "p90": 500,
+     "max": 500
+    },
+    "tokens": {
+     "min": 19,
+     "p10": 86,
+     "median": 102.0,
+     "mean": 103.0,
+     "p90": 124,
+     "max": 234
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 1016,
+     "footnote": 0
+    },
+    "ingest_seconds": 0.03
+   },
+   "B": {
+    "params": {
+     "chunker": "by_paragraph",
+     "max_size": 1200,
+     "filter": false
+    },
+    "n_chunks": 645,
+    "n_rows_in_db": 645,
+    "re_embedded": 1,
+    "reused_from_db": 644,
+    "written": 1,
+    "deleted_obsolete": 1,
+    "total_chars": 426144,
+    "total_tokens": 92015,
+    "chars": {
+     "min": 7,
+     "p10": 179,
+     "median": 679,
+     "mean": 660.7,
+     "p90": 1100,
+     "max": 1216
+    },
+    "tokens": {
+     "min": 3,
+     "p10": 49,
+     "median": 145,
+     "mean": 142.7,
+     "p90": 229,
+     "max": 421
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 533,
+     "footnote": 112
+    },
+    "ingest_seconds": 0.38
+   }
+  },
+  "total_seconds": 5.56
+ },
+ {
+  "started_at": "2026-11-13T07:38:55+00:00",
+  "model": "google/embeddinggemma-2 (local, sentence-transformers)",
+  "dimensions": 768,
+  "device": "mps",
+  "doc_prompt": "title: none | text: ",
+  "query_prompt": "task: search result | query: ",
+  "max_seq_length": 512,
+  "versions": {
+   "sentence-transformers": "6.3.0",
+   "transformers": "5.22.2",
+   "torch": "2.15.0",
+   "psycopg": "3.3.8",
+   "pymupdf": "2.1"
+  },
+  "vector_store": "pgvector 0.8.7 / PostgreSQL 16, cosine, exact scan (no ANN index)",
+  "cost_usd": 0.0,
+  "pages": 146,
+  "page_errors": [],
+  "read_seconds": 1.46,
+  "strategies": {
+   "A": {
+    "params": {
+     "chunker": "fixed_size",
+     "size": 500,
+     "overlap": 50,
+     "filter": false
+    },
+    "n_chunks": 1016,
+    "n_rows_in_db": 1016,
+    "re_embedded": 0,
+    "reused_from_db": 1016,
+    "written": 0,
+    "deleted_obsolete": 0,
+    "total_chars": 474609,
+    "total_tokens": 104614,
+    "chars": {
+     "min": 55,
+     "p10": 345,
+     "median": 500.0,
+     "mean": 467.1,
+     "p90": 500,
+     "max": 500
+    },
+    "tokens": {
+     "min": 19,
+     "p10": 86,
+     "median": 102.0,
+     "mean": 103.0,
+     "p90": 124,
+     "max": 234
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 1016,
+     "footnote": 0
+    },
+    "ingest_seconds": 0.04
+   },
+   "B": {
+    "params": {
+     "chunker": "by_paragraph",
+     "max_size": 1200,
+     "filter": false
+    },
+    "n_chunks": 640,
+    "n_rows_in_db": 640,
+    "re_embedded": 16,
+    "reused_from_db": 624,
+    "written": 16,
+    "deleted_obsolete": 5,
+    "total_chars": 426149,
+    "total_tokens": 92010,
+    "chars": {
+     "min": 7,
+     "p10": 195,
+     "median": 693.5,
+     "mean": 665.9,
+     "p90": 1107,
+     "max": 1216
+    },
+    "tokens": {
+     "min": 6,
+     "p10": 51,
+     "median": 145.0,
+     "mean": 143.8,
+     "p90": 229,
+     "max": 421
+    },
+    "tokens_over_max_seq": 0,
+    "kinds": {
+     "body": 528,
+     "footnote": 112
+    },
+    "ingest_seconds": 0.97
+   }
+  },
+  "total_seconds": 6.33
+ }
+]
