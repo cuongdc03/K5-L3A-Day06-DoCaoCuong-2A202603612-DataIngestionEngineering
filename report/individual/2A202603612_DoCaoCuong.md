@@ -1,6 +1,6 @@
 # Báo cáo cá nhân — Day 6: Data Ingestion Engineering
 
-**Học viên:** Do Cao Cuong · **MSSV:** 2A202603612 · **Ngày chạy:** 2026-11-13 (UTC)
+**Học viên:** Đỗ Cao Cường · **MSSV:** 2A202603612 · **Ngày chạy:** 2026-11-13 (UTC)
 **Tóm tắt một dòng:** trên corpus *Introduction to Intellectual Property* (146 trang hữu ích), chunk theo cấu trúc (B2) cho chunk mạch lạc hơn hẳn chunk cố định 500 ký tự (coherence 1,90 so với 0,90 /2), và thêm filter `ip_type` (C2) cho kết quả truy xuất tốt nhất ở mẫu này, nhưng test chỉ có 5 câu nên **không kết luận chiến lược nào tốt nhất tổng quát**.
 
 ## Dữ liệu và pipeline
