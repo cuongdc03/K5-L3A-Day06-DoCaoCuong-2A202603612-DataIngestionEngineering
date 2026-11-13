@@ -1,0 +1,126 @@
+{
+ "frozen": {
+  "frozen_at": "2026-11-13T08:13:30+00:00",
+  "selected": "w0.7",
+  "params": {
+   "method": "weighted",
+   "alpha": 0.7
+  },
+  "pool": 50,
+  "bm25": {
+   "k1": 1.5,
+   "b": 0.75
+  },
+  "selection_rule": "dev only: max Evidence Hit@3, then Hit@1, then RRF, then larger alpha"
+ },
+ "bench": "../data/benchmark_holdout.json",
+ "split": "holdout",
+ "run_at": "2026-11-13T08:13:48+00:00",
+ "summary": {
+  "bm25|holdout": {
+   "n": 10,
+   "hit@1": "9/10",
+   "evidence_hit@3": "9/10",
+   "page_hit@1": "9/10",
+   "page_hit@3": "9/10"
+  },
+  "bm25|holdout|easy": {
+   "n": 2,
+   "hit@1": "2/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "2/2",
+   "page_hit@3": "2/2"
+  },
+  "bm25|holdout|filtered": {
+   "n": 3,
+   "hit@1": "3/3",
+   "evidence_hit@3": "3/3",
+   "page_hit@1": "3/3",
+   "page_hit@3": "3/3"
+  },
+  "bm25|holdout|hard": {
+   "n": 4,
+   "hit@1": "4/4",
+   "evidence_hit@3": "4/4",
+   "page_hit@1": "4/4",
+   "page_hit@3": "4/4"
+  },
+  "bm25|holdout|medium": {
+   "n": 4,
+   "hit@1": "3/4",
+   "evidence_hit@3": "3/4",
+   "page_hit@1": "3/4",
+   "page_hit@3": "3/4"
+  },
+  "dense|holdout": {
+   "n": 10,
+   "hit@1": "7/10",
+   "evidence_hit@3": "9/10",
+   "page_hit@1": "7/10",
+   "page_hit@3": "9/10"
+  },
+  "dense|holdout|easy": {
+   "n": 2,
+   "hit@1": "1/2",
+   "evidence_hit@3": "1/2",
+   "page_hit@1": "1/2",
+   "page_hit@3": "1/2"
+  },
+  "dense|holdout|filtered": {
+   "n": 3,
+   "hit@1": "2/3",
+   "evidence_hit@3": "3/3",
+   "page_hit@1": "2/3",
+   "page_hit@3": "3/3"
+  },
+  "dense|holdout|hard": {
+   "n": 4,
+   "hit@1": "4/4",
+   "evidence_hit@3": "4/4",
+   "page_hit@1": "4/4",
+   "page_hit@3": "4/4"
+  },
+  "dense|holdout|medium": {
+   "n": 4,
+   "hit@1": "2/4",
+   "evidence_hit@3": "4/4",
+   "page_hit@1": "2/4",
+   "page_hit@3": "4/4"
+  },
+  "hybrid|holdout": {
+   "n": 10,
+   "hit@1": "7/10",
+   "evidence_hit@3": "10/10",
+   "page_hit@1": "7/10",
+   "page_hit@3": "10/10"
+  },
+  "hybrid|holdout|easy": {
+   "n": 2,
+   "hit@1": "1/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "1/2",
+   "page_hit@3": "2/2"
+  },
+  "hybrid|holdout|filtered": {
+   "n": 3,
+   "hit@1": "2/3",
+   "evidence_hit@3": "3/3",
+   "page_hit@1": "2/3",
+   "page_hit@3": "3/3"
+  },
+  "hybrid|holdout|hard": {
+   "n": 4,
+   "hit@1": "4/4",
+   "evidence_hit@3": "4/4",
+   "page_hit@1": "4/4",
+   "page_hit@3": "4/4"
+  },
+  "hybrid|holdout|medium": {
+   "n": 4,
+   "hit@1": "2/4",
+   "evidence_hit@3": "4/4",
+   "page_hit@1": "2/4",
+   "page_hit@3": "4/4"
+  }
+ }
+}

@@ -144,6 +144,102 @@ def cmd_eval(args: argparse.Namespace) -> None:
                   f"page_hit@1={v['page_hit@1']:6} page_hit@3={v['page_hit@3']}")
 
 
+POOL = 50                      # candidates taken from each retriever before fusion
+HYBRID_DIR = config.RESULTS / "hybrid"
+# tuning grid (dev only). 'dense' and 'bm25' are references, not selectable as "hybrid".
+GRID = [("dense", {}), ("bm25", {}), ("rrf_k60", {"method": "rrf", "rrf_k": 60}),
+        ("w0.3", {"method": "weighted", "alpha": 0.3}), ("w0.5", {"method": "weighted", "alpha": 0.5}),
+        ("w0.7", {"method": "weighted", "alpha": 0.7}), ("w0.8", {"method": "weighted", "alpha": 0.8})]
+
+
+def _hybrid_runner():
+    """Returns run(question, system) -> trace for systems 'dense', 'bm25' and any grid name."""
+    from .hybrid import BM25, fuse
+    embedder, store = MyEmbedder(), _store()
+    chunks = store.all_chunks("B2")
+    by_id = {c["chunk_id"]: c for c in chunks}
+    bm = BM25([c["text"] for c in chunks])          # idf/length statistics over the whole B2 index
+
+    def run(q: dict, system: str, params: dict) -> dict:
+        flt = q["filter"]                               # C2 convention: filter only when the question has one
+        t0 = time.perf_counter()
+        qv = embedder.embed_query(q["question"])
+        dense = [(h["chunk_id"], h["score"]) for h in store.search("B2", qv, POOL, flt)]
+        t_dense = time.perf_counter() - t0
+        t1 = time.perf_counter()
+        sc = bm.scores(q["question"])
+        ranked = sorted(((c["chunk_id"], s) for c, s in zip(chunks, sc)
+                         if s > 0 and all(c.get(k) == v for k, v in (flt or {}).items())),
+                        key=lambda x: (-x[1], x[0]))[:POOL]
+        t_bm = time.perf_counter() - t1
+        method = params.get("method", system)
+        fused = fuse(dense, ranked, method, params.get("alpha", 0.5), params.get("rrf_k", 60))[:config.TOP_K]
+        dr = {c: i for i, (c, _) in enumerate(dense, 1)}
+        br = {c: i for i, (c, _) in enumerate(ranked, 1)}
+        ds, bs = dict(dense), dict(ranked)
+        hits = [{**by_id[c], "score": s, "dense_rank": dr.get(c), "bm25_rank": br.get(c),
+                 "dense_score": ds.get(c), "bm25_score": bs.get(c)} for c, s in fused]
+        tr = evaluate_query(q, hits)
+        tr.update({"strategy": system, "index": "B2", "filter_used": flt,
+                   "dense_ms": round(t_dense * 1000, 1), "bm25_ms": round(t_bm * 1000, 2)})
+        if flt:
+            tr["filter_ok"] = all(h.get(k) == v for h in hits for k, v in flt.items())
+        return tr
+    return run
+
+
+def cmd_hybrid_tune(_: argparse.Namespace) -> None:
+    """Grid on the 15 DEV questions only; selects by a rule fixed here, then freezes the choice."""
+    bench = json.loads(config.BENCHMARK.read_text())["questions"]
+    dev = [q for q in bench if q["split"] == "dev"]
+    run = _hybrid_runner()
+    table = {}
+    for name, params in GRID:
+        traces = [run(q, name, params) for q in dev]
+        table[name] = {"params": params, "hit@1": sum(t["hit@1"] for t in traces),
+                       "hit@3": sum(t["hit@3"] for t in traces), "n": len(traces),
+                       "per_question": {t["id"]: [int(t["hit@1"]), int(t["hit@3"])] for t in traces}}
+        print(f"{name:8} dev Hit@1={table[name]['hit@1']}/15  Hit@3={table[name]['hit@3']}/15")
+    # rule (fixed before running): among hybrids only -> max Hit@3, then max Hit@1, then RRF (no tuned weight),
+    # then the larger dense weight alpha
+    cand = [n for n in table if n not in ("dense", "bm25")]
+    best = max(cand, key=lambda n: (table[n]["hit@3"], table[n]["hit@1"], n.startswith("rrf"),
+                                    dict(GRID)[n].get("alpha", 0)))
+    HYBRID_DIR.mkdir(parents=True, exist_ok=True)
+    frozen_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    (HYBRID_DIR / "tuning_dev.json").write_text(json.dumps({"run_at": frozen_at, "pool": POOL, "table": table}, indent=1))
+    (HYBRID_DIR / "frozen.json").write_text(json.dumps(
+        {"frozen_at": frozen_at, "selected": best, "params": dict(GRID)[best], "pool": POOL,
+         "bm25": {"k1": 1.5, "b": 0.75}, "selection_rule": "dev only: max Evidence Hit@3, then Hit@1, then RRF, then larger alpha"},
+        indent=1))
+    print(f"selected on dev: {best}  (frozen_at {frozen_at}); holdout/test not touched")
+
+
+def cmd_hybrid_eval(args: argparse.Namespace) -> None:
+    frozen_path = HYBRID_DIR / "frozen.json"
+    if not frozen_path.exists():
+        raise SystemExit("no frozen hybrid parameters: run `python -m src.run hybrid-tune` first")
+    frozen = json.loads(frozen_path.read_text())
+    data = json.loads(open(args.bench).read())["questions"]
+    qs = [q for q in data if q["split"] == args.split]
+    if args.split == "test" and not args.final:
+        raise SystemExit("original test split is locked: pass --final")
+    run = _hybrid_runner()
+    systems = [("dense", {}), ("bm25", {}), ("hybrid", {**frozen["params"]})]
+    traces = [run(q, name, p) for q in qs for name, p in systems]
+    out = HYBRID_DIR / args.tag
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "traces.jsonl").write_text("\n".join(json.dumps(t, ensure_ascii=False) for t in traces) + "\n")
+    summary = summarize(traces)
+    (out / "summary.json").write_text(json.dumps({"frozen": frozen, "bench": args.bench, "split": args.split,
+                                                  "run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                                  "summary": summary}, indent=1))
+    print(f"bench={args.bench} split={args.split} n={len(qs)} hybrid={frozen['selected']}")
+    for key, v in summary.items():
+        if key.count("|") == 1:
+            print(f"{key:16} Hit@1={v['hit@1']:5}  EvidenceHit@3={v['evidence_hit@3']:5}  page_hit@3={v['page_hit@3']}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -153,6 +249,13 @@ def main() -> None:
     ev.add_argument("--tag", required=True, help="experiment name; results go to results/<tag>/")
     ev.add_argument("--final", action="store_true", help="required for the test split")
     ev.set_defaults(fn=cmd_eval)
+    sub.add_parser("hybrid-tune").set_defaults(fn=cmd_hybrid_tune)
+    he = sub.add_parser("hybrid-eval")
+    he.add_argument("--bench", required=True)
+    he.add_argument("--split", required=True)
+    he.add_argument("--tag", required=True)
+    he.add_argument("--final", action="store_true")
+    he.set_defaults(fn=cmd_hybrid_eval)
     args = ap.parse_args()
     args.fn(args)
 

@@ -1,0 +1,126 @@
+{
+ "frozen": {
+  "frozen_at": "2026-11-13T08:13:30+00:00",
+  "selected": "w0.7",
+  "params": {
+   "method": "weighted",
+   "alpha": 0.7
+  },
+  "pool": 50,
+  "bm25": {
+   "k1": 1.5,
+   "b": 0.75
+  },
+  "selection_rule": "dev only: max Evidence Hit@3, then Hit@1, then RRF, then larger alpha"
+ },
+ "bench": "../data/benchmark.json",
+ "split": "test",
+ "run_at": "2026-11-13T08:13:41+00:00",
+ "summary": {
+  "bm25|test": {
+   "n": 5,
+   "hit@1": "2/5",
+   "evidence_hit@3": "3/5",
+   "page_hit@1": "2/5",
+   "page_hit@3": "3/5"
+  },
+  "bm25|test|easy": {
+   "n": 1,
+   "hit@1": "0/1",
+   "evidence_hit@3": "0/1",
+   "page_hit@1": "0/1",
+   "page_hit@3": "0/1"
+  },
+  "bm25|test|filtered": {
+   "n": 2,
+   "hit@1": "1/2",
+   "evidence_hit@3": "1/2",
+   "page_hit@1": "1/2",
+   "page_hit@3": "1/2"
+  },
+  "bm25|test|hard": {
+   "n": 2,
+   "hit@1": "1/2",
+   "evidence_hit@3": "1/2",
+   "page_hit@1": "1/2",
+   "page_hit@3": "1/2"
+  },
+  "bm25|test|medium": {
+   "n": 2,
+   "hit@1": "1/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "1/2",
+   "page_hit@3": "2/2"
+  },
+  "dense|test": {
+   "n": 5,
+   "hit@1": "4/5",
+   "evidence_hit@3": "5/5",
+   "page_hit@1": "4/5",
+   "page_hit@3": "5/5"
+  },
+  "dense|test|easy": {
+   "n": 1,
+   "hit@1": "0/1",
+   "evidence_hit@3": "1/1",
+   "page_hit@1": "0/1",
+   "page_hit@3": "1/1"
+  },
+  "dense|test|filtered": {
+   "n": 2,
+   "hit@1": "2/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "2/2",
+   "page_hit@3": "2/2"
+  },
+  "dense|test|hard": {
+   "n": 2,
+   "hit@1": "2/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "2/2",
+   "page_hit@3": "2/2"
+  },
+  "dense|test|medium": {
+   "n": 2,
+   "hit@1": "2/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "2/2",
+   "page_hit@3": "2/2"
+  },
+  "hybrid|test": {
+   "n": 5,
+   "hit@1": "4/5",
+   "evidence_hit@3": "5/5",
+   "page_hit@1": "4/5",
+   "page_hit@3": "5/5"
+  },
+  "hybrid|test|easy": {
+   "n": 1,
+   "hit@1": "0/1",
+   "evidence_hit@3": "1/1",
+   "page_hit@1": "0/1",
+   "page_hit@3": "1/1"
+  },
+  "hybrid|test|filtered": {
+   "n": 2,
+   "hit@1": "2/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "2/2",
+   "page_hit@3": "2/2"
+  },
+  "hybrid|test|hard": {
+   "n": 2,
+   "hit@1": "2/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "2/2",
+   "page_hit@3": "2/2"
+  },
+  "hybrid|test|medium": {
+   "n": 2,
+   "hit@1": "2/2",
+   "evidence_hit@3": "2/2",
+   "page_hit@1": "2/2",
+   "page_hit@3": "2/2"
+  }
+ }
+}

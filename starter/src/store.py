@@ -70,6 +70,14 @@ class PgVectorStore:
             return self.conn.execute("DELETE FROM chunks WHERE strategy=%s AND NOT (chunk_id = ANY(%s))",
                                      (strategy, keep_ids)).rowcount
 
+    def all_chunks(self, strategy: str) -> list[dict[str, Any]]:
+        """Every chunk of a strategy (text + metadata, no vectors); used by the BM25 index."""
+        keys = ["chunk_id", "text", "document_id", "source", "page", "printed_page", "chapter",
+                "ip_type", "section", "kind"]
+        rows = self.conn.execute(f"SELECT {', '.join(keys)} FROM chunks WHERE strategy=%s ORDER BY chunk_id",
+                                 (strategy,)).fetchall()
+        return [dict(zip(keys, r)) for r in rows]
+
     def search(self, strategy: str, query_vector: list[float], top_k: int = 3,
                filters: dict[str, Any] | None = None) -> list[dict[str, Any]]:
         where, params = ["strategy=%s"], [strategy]

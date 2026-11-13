@@ -1,0 +1,14 @@
+{
+ "frozen_at": "2026-11-13T08:13:30+00:00",
+ "selected": "w0.7",
+ "params": {
+  "method": "weighted",
+  "alpha": 0.7
+ },
+ "pool": 50,
+ "bm25": {
+  "k1": 1.5,
+  "b": 0.75
+ },
+ "selection_rule": "dev only: max Evidence Hit@3, then Hit@1, then RRF, then larger alpha"
+}

@@ -92,7 +92,7 @@ Hit tự động rất chặt: chunk phải ở trang gold và chứa **trọn**
 **Chiến lược chọn và điều kiện áp dụng.** **C2**, theo tiêu chí đã chốt. Đánh đổi: ít chunk và coherence cao (B2), filter không tốn tài nguyên nhưng chỉ dùng được khi ngữ cảnh người dùng cung cấp trước `ip_type`; không có filter thì C2 = B2. Chỉ áp dụng cho corpus này (sách giáo trình tiếng Anh có cấu trúc rõ, font phân biệt heading), không suy rộng.
 
 **Hạn chế.**
-- **Test và dev nhỏ:** 5 câu test, 15 câu dev; chênh 1 câu bằng 20 điểm % (test) hoặc 6,7 điểm % (dev). Test chạy một lần sau khi chốt cấu hình; **không dùng điểm test để tinh chỉnh**.
+- **Test và dev nhỏ:** 5 câu test, 15 câu dev; chênh 1 câu bằng 20 điểm % (test) hoặc 6,7 điểm % (dev). Test chạy một lần sau khi chốt cấu hình C2; **không dùng điểm test để tinh chỉnh**. Sau đó test được dùng thêm đúng một lần để chạy hybrid với tham số đã chốt trên dev (mục hybrid), cũng không dùng để chỉnh.
 - **Thí nghiệm sau khi xem dev:** A2 (exp2) và B2/C2 (exp3) được thêm sau khi xem kết quả dev, ghi trong `artifacts/experiment_log.csv`. Trước mọi lần truy xuất, tôi đã gộp tiêu đề liên tiếp và mẩu < 80 ký tự trong B (645 → 640 chunk).
 - **Rò rỉ trang:** test q18 trùng trang 116 với dev q01 và q13; q20 kề q11 (trang 90).
 - **Nhãn:** phần lớn nhãn thủ công do Claude đề xuất rồi tác giả chấp nhận; có nguy cơ thiên lệch và thiếu độc lập (người chấm cũng là người thiết kế benchmark, đã thấy số Hit). Chỉ 5/20 nhãn coherence là điểm tác giả tự chấm.
@@ -106,6 +106,32 @@ Hit tự động rất chặt: chunk phải ở trang gold và chứa **trọn**
 2. Hybrid BM25 + dense: các câu trượt sát nút (q09 hạng 5, q10 hạng 4, q13 hạng 4) đều có từ khóa rõ.
 3. Cho phép chunk vượt ranh giới trang (nối đoạn tiếp nối) để sửa lỗi coherence ở đầu trang.
 4. Thử embedding khác (OpenRouter/OpenAI) và truy vấn tiếng Việt.
+
+## Mở rộng tùy chọn: hybrid retrieval (dense + BM25)
+
+**Thiết kế.** Giữ nguyên chunk, vector và filter của C2 (strategy B2); chỉ đổi bước truy xuất. BM25 (Okapi, k1 = 1,5, b = 0,75 là mặc định sách giáo khoa, không chỉnh) cài đặt tay trên đúng các chunk B2, thống kê idf trên toàn bộ 632 chunk, filter `ip_type` áp dụng sau khi chấm điểm và chỉ ở câu có filter. Hợp nhất từ 50 ứng viên mỗi bên. Giao thức viết **trước khi chạy** (`starter/results/hybrid/PROTOCOL.md`): chỉ chọn phương pháp/trọng số hợp nhất trên **15 câu dev** theo luật cố định (Evidence Hit@3 cao nhất, rồi Hit@1, rồi RRF, rồi trọng số dense lớn hơn). Lưới: RRF (k = 60) và trung bình có trọng số min-max với dense α ∈ {0,3; 0,5; 0,7; 0,8}.
+
+**Câu hỏi chưa dùng để chỉnh.** (a) 5 câu test gốc (q16–q20; đã xem một lần khi chọn C2, chưa bao giờ dùng để chọn tham số hybrid) và (b) **10 câu holdout mới** (`data/benchmark_holdout.json`, sha256 `6eff42c5…b66904`, trang gold không trùng dev/test, evidence kiểm bằng cùng script, soạn và kiểm **trước khi** chạy hybrid, 3 câu có filter).
+
+**Kết quả** (Hit@1 / Evidence Hit@3, cùng định nghĩa chặt):
+
+| Hệ thống | Dev 15 (dùng để chỉnh) | Test gốc 5 | Holdout 10 | Gộp 15 câu chưa chỉnh |
+|---|---|---|---|---|
+| Dense (= C2) | 8/15 · 12/15 | 4/5 · 5/5 | 7/10 · 9/10 | 11/15 · 14/15 |
+| BM25 | 6/15 · 11/15 | 2/5 · 3/5 | 9/10 · 9/10 | 11/15 · 12/15 |
+| **Hybrid (α = 0,7, chọn trên dev)** | 9/15 · 14/15 | 4/5 · 5/5 | 7/10 · 10/10 | 11/15 · **15/15** |
+
+Chi phí: không thêm lưu trữ hay embedding; dựng chỉ mục BM25 trong bộ nhớ cho 632 chunk mất ≈ 21 ms, chấm điểm BM25 ≈ 0,5 ms/câu (embed + pgvector ≈ 35–45 ms/câu); đo một lần.
+
+**Đọc kết quả (trung thực).**
+- **Trên dev, hybrid tốt hơn rõ (Hit@3 12 → 14), nhưng đó là mẫu đã dùng để chọn trọng số nên lạc quan.** Câu cải thiện: q09, q13, q14; câu **xấu đi: q08** (Hit@1 từ 1 xuống 0, Hit@3 giữ nguyên).
+- **Trên 15 câu chưa chỉnh, hybrid không làm xấu câu nào và cải thiện đúng một câu về Hit@3: h07** (14 → 15; chunk đúng từ ngoài top-3 lên hạng 3); Hit@1 không đổi (11/15). Một câu trên 15 không đủ để kết luận.
+- **q08 (hybrid xấu hơn dense):** chunk "Infringement is a strict liability…" có từ khóa trùng nhiều (BM25 hạng 1, dense hạng 2) đẩy lên trước chunk chú thích chứa ngoại lệ (dense hạng 1, BM25 hạng 5); cả hai vẫn trong top-3 nên Hit@3 còn, Hit@1 mất.
+- **h01 (BM25 đúng mà hybrid vẫn trượt Hit@1):** BM25 xếp chunk gold hạng 1 còn dense xếp hạng 2; với α = 0,7 điểm dense chiếm ưu thế nên chunk trang 118 (dense hạng 1) thắng sát nút. Trọng số thiên về dense làm mất lợi thế của BM25.
+- **BM25 một mình không ổn định:** Hit@3 chỉ 3/5 ở test (trượt q16 và q20, mất Hit@1 ở q17; đều là câu diễn đạt khác từ trong nguồn) nhưng 9/10 ở holdout. Holdout được soạn trực tiếp từ nguyên văn nguồn nên nhiều câu có từ khóa trùng đặc trưng ("snake oil", "Rotary", "Defend Trade Secrets Act"), **thiên lệch có lợi cho BM25**; không nên coi 9/10 là sức mạnh tổng quát của BM25.
+- **Độ nhạy (post-hoc, không dùng để đổi lựa chọn)** `results/hybrid/sensitivity_posthoc.json`: trên 15 câu chưa chỉnh, Hit@3 của các biến thể hybrid là RRF 15, α = 0,5: 15, α = 0,7: 15, α = 0,8: 15, α = 0,3: 14; Hit@1 lần lượt 12, 13, 11, 11, 12. Tức trọng số 0,7 chọn trên dev **không phải tốt nhất** ở dữ liệu chưa thấy, một dấu hiệu của nhiễu khi chọn tham số trên 15 câu.
+
+**Kết luận về hybrid.** Hybrid không gây hại ở mẫu này và có thể thêm một chút Hit@3 với chi phí gần bằng 0, nhưng **chênh lệch (+1 câu trên 15) nằm trong sai số của mẫu nhỏ**, nên tôi không tuyên bố hybrid tốt hơn dense. Nếu áp dụng thật, nên chọn trọng số bằng tập dev lớn hơn hoặc dùng RRF (không có trọng số phải chỉnh). Hybrid chưa được chấm thủ công coherence/grounding: chunk không đổi nên coherence giữ nguyên; grounding không chấm lại. Artifact: `starter/results/hybrid/{PROTOCOL.md,tuning_dev.json,frozen.json,test/,holdout/,sensitivity_posthoc.json}`; mã `starter/src/hybrid.py`; lệnh `python -m src.run hybrid-tune` và `hybrid-eval` (README).
 
 ## AI/công cụ đã dùng và cách kiểm tra
 Claude Code (mô hình Sonnet 5.5) dùng để viết mã pipeline, gợi ý câu hỏi benchmark (chốt cùng tác giả), đề xuất nhãn thủ công và nháp báo cáo. Cách kiểm tra: `scripts/verify_benchmark.py` (evidence nguyên văn trên trang gold, filter khớp metadata), đối chiếu số trang in với header PDF, kiểm tra nạp lại và tài liệu đổi bằng lệnh thật, chạy lại A/B/C cho kết quả trùng khớp exp1; các lỗi trong lúc làm đã sửa và ghi lại (pip treo → dùng `uv`; psycopg không autocommit làm lần nạp đầu bị rollback, đã xóa log sai và nạp lại; cảnh báo section giả do regex nhầm chú thích hình/bảng đã gỡ khỏi nhãn). Corpus: OpenStax, CC BY; trích dẫn trong trace thuộc nội dung đó.

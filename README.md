@@ -32,6 +32,12 @@ python -m src.run ingest                           # ~70 s lần đầu; chạy 
 python -m src.run eval --split dev --tag exp3      # sáu cấu hình A, A2, B, B2, C, C2
 python -m src.run eval --split test --final --tag final   # test bị khóa; chỉ chạy sau khi chốt cấu hình
 python scripts/make_manual_sheets.py               # sinh bảng chấm thủ công (nhãn không được điền tự động)
+
+# 6. Mở rộng tùy chọn: hybrid (dense + BM25), từ starter/
+python ../scripts/verify_benchmark.py ../data/raw/introduction-intellectual-property.pdf ../data/manifest.json ../data/benchmark_holdout.json   # PASS
+python -m src.run hybrid-tune                      # chọn trọng số chỉ trên dev, ghi results/hybrid/frozen.json
+python -m src.run hybrid-eval --bench ../data/benchmark.json --split test --final --tag test
+python -m src.run hybrid-eval --bench ../data/benchmark_holdout.json --split holdout --tag holdout
 ```
 
 Kết quả và minh chứng: `starter/results/{exp1,exp2,exp3,final}/` (trace top-3, summary), `starter/results/ingest_log.json` (thời gian, chunk, phiên bản), `starter/results/manual/` (nhãn thủ công), `artifacts/experiment_log.csv`. Seed duy nhất: thứ tự chấm coherence (`20261113`). Chi phí embedding 0 USD (local). Kết quả có thể lệch nhẹ ở chữ số thập phân trên máy/thiết bị khác (MPS so với CPU).
